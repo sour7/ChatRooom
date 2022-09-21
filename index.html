@@ -143,7 +143,7 @@
               return ref.id;
             });
         } else {
-          alert("firstname must have atleast 3 character");
+          alert("firstname must have atleast 4 character");
         }
       } else {
         alert("firstname and lastname is required");
@@ -201,8 +201,8 @@ var user = JSON.parse(localStorage.getItem("user"));
               mymessage.innerHTML = `
                     <div class="mymsg" >
                       
-                      <div >
-                        <small class='userName'>${item.userName}</small>
+                      <div style="border:2px solid transparent; width:100%; text-align:end">
+                        <small class='userName' >${item.userName}</small>
                        <p class='usertext'> ${item.message} </p>
                    
                         </div>

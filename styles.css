@@ -70,6 +70,7 @@
   color: white;
   padding-top: 5px;
   padding-bottom: 5px;
+  padding-left: 5px;
 }
 .chat {
   display: none;
@@ -83,6 +84,7 @@
   padding: 0%;
   margin: 0%;
   color: rgb(163, 157, 157);
+ 
 }
 .usertext {
   padding: 0%;
