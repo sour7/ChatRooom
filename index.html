@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Group Chat</title>
+    <link
+      href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link rel="stylesheet" href="styles.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="heading">
+      <h1 class="heading-text">Chat App</h1>
+    </div>
+
+    <div id="popup" class=" ">
+      <div class="mdc-dialog mdc-dialog--open mdc-dialog">
+        <div class="mdc-dialog__container">
+          <div
+            class="mdc-dialog__surface"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="my-dialog-title"
+            aria-describedby="my-dialog-content"
+          >
+            <div class="mdc-dialog__header">
+              <h2 class="mdc-dialog__title" id="my-dialog-title">
+                Please Login.
+              </h2>
+            </div>
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                margin: auto;
+                width: 90%;
+              "
+            >
+              <input
+                id="firstname"
+                type="text"
+                placeholder="firstname"
+                style="padding: 5px; font-size: 16px"
+                value=""
+              />
+              <br />
+              <input
+                id="lastname"
+                type="text"
+                placeholder="lastname"
+                style="padding: 5px; font-size: 16px"
+                value=""
+              />
+            </div>
+            <div class="mdc-dialog__actions">
+              <button
+                type="button"
+                class="mdc-button"
+                data-mdc-dialog-action="ok"
+                style="border: 1px solid"
+              >
+                <div class="mdc-button__ripple"></div>
+
+                <div class="mdc-button__label" id="gobtn" onclick="gotochat()">
+                  JOIN
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="mdc-dialog__scrim"></div>
+      </div>
+    </div>
+
+    <div id="chat"  class="hide">
+      <div class="msg-container">
+        <div class="message" id="message" showLastChat()>
+        
+        </div>
+
+        <div class="mytext">
+        <input type="text"  value=""  id="myTextmsg" class="inputText" placeholder="Message...">
+         
+          <span class="material-icons sendicon" onclick="sendMyText()"> send </span>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script></script>
+  <script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-auth-compat.js"></script>
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyDYQxoFMDV5gKie-E8zg_lz6CCXHcYOvcM",
+      authDomain: "notion-it-chat.firebaseapp.com",
+      projectId: "notion-it-chat",
+      storageBucket: "notion-it-chat.appspot.com",
+      messagingSenderId: "432618414673",
+      appId: "1:432618414673:web:0ec827619226dae0f0ce70",
+    };
+
+    // Initialize Firebase
+    var app = firebase.initializeApp(firebaseConfig);
+    const db = app.firestore();
+    // const auth = firebaseApp.auth();
+    // console.log(db);
+  </script>
+
+  <script>
+    function gotochat() {
+      let firstname = document.getElementById("firstname").value;
+      let lastname = document.getElementById("lastname").value;
+      var username= firstname +" "+lastname
+     
+      if (firstname !== "" && lastname !== "") {
+        if (firstname.length > 3) {
+          firebase
+            .firestore()
+            .collection("users")
+            .add({
+              Firstname: firstname,
+              Lastname: lastname,
+            })
+            .then((ref) => {
+              $("#popup").addClass("hide");
+              $("#chat").removeClass("hide");
+              localStorage.setItem('user', JSON.stringify({
+                userName: username,
+                id : ref.id
+              }))
+             
+              return ref.id;
+            });
+        } else {
+          alert("firstname must have atleast 3 character");
+        }
+      } else {
+        alert("firstname and lastname is required");
+      }
+    }
+
+    function sendMyText() {
+      document.getElementById("message").innerHTML=""
+      var myTextmsg = document.getElementById("myTextmsg").value;
+     var personalId = 0;
+var user = JSON.parse(localStorage.getItem("user"));
+      console.log("user",user)
+      firebase
+        .firestore()
+        .collection("chat")
+        .add({
+          message: myTextmsg,
+          id:user.id,
+          userName: user.userName,
+          time : Date.now()
+        })
+        .then((ref) => {
+          document.getElementById("myTextmsg").value="";
+          return ref.id;
+        });
+       
+    }
+   
+   function getAllmsgRealtime(){
+ 
+     var msg =[];
+    db.collection("chat").orderBy("time").onSnapshot((querySnapshot)=>{
+      document.getElementById('message').innerHTML=""
+      querySnapshot.forEach(doc=>{
+        (  showAllText(doc.data()))
+      })
+      // console.log(querySnapshot)
+    });
+    // console.log( msg)
+    // document.getElementById("myTextmsg").value=null
+   }
+  
+
+
+
+    // Create message box to show in UI
+    function showAllText(item) {
+    
+            var message = document.getElementById('message')
+          
+            var mymessage = document.createElement('div')
+            var userNameInLocalStorage = JSON.parse(localStorage.getItem("user")).userName
+            
+            if (item.userName == userNameInLocalStorage) {
+              mymessage.innerHTML = `
+                    <div class="mymsg" >
+                      
+                      <div >
+                        <small class='userName'>${item.userName}</small>
+                       <p class='usertext'> ${item.message} </p>
+                   
+                        </div>
+                        <div>
+                      <span class="material-icons"> account_circle </span>
+                      </div>
+                    </div>
+                `
+            } else if (item.userName == undefined) {
+              mymessage.innerHTML = `
+                    <div class="othertext" >
+                      <div>
+                      <span class="material-icons"> account_circle </span>
+                      </div>
+                      <div>
+                        <small class='userName'>Anonymous</small>
+                        <p>${item.message}</p>
+                        </div>
+                    </div>
+                `
+            } else {
+              mymessage.innerHTML = `
+              <div class="othertext" >
+                      <div class='personicon'>
+                      <span class="material-icons"> account_circle </span>
+                      </div>
+                      <div>
+                        <small class='userName'>${item.userName}</small>
+                        <p>${item.message}</p>
+                        </div>
+                    </div>
+                `
+            }
+           
+            message.append(mymessage)
+         
+            message.scrollTop = message.scrollHeight;
+        }
+       
+        getAllmsgRealtime()
+       
+
+       
+    
+
+  </script> 
+</html>
