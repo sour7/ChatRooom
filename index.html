@@ -21,6 +21,7 @@
   <body>
     <div class="heading">
       <h1 class="heading-text">Chat App</h1>
+      <p class="logout" onclick="logout()">Logout</p>
     </div>
 
     <div id="popup" class=" ">
@@ -35,7 +36,7 @@
           >
             <div class="mdc-dialog__header">
               <h2 class="mdc-dialog__title" id="my-dialog-title">
-                Please Login.
+              Please Login
               </h2>
             </div>
             <div
@@ -133,12 +134,14 @@
               Lastname: lastname,
             })
             .then((ref) => {
-              $("#popup").addClass("hide");
-              $("#chat").removeClass("hide");
+             
               localStorage.setItem('user', JSON.stringify({
                 userName: username,
                 id : ref.id
+                
               }))
+              $("#popup").addClass("hide");
+              $("#chat").removeClass("hide");
              
               return ref.id;
             });
@@ -153,9 +156,8 @@
     function sendMyText() {
       document.getElementById("message").innerHTML=""
       var myTextmsg = document.getElementById("myTextmsg").value;
-     var personalId = 0;
 var user = JSON.parse(localStorage.getItem("user"));
-      console.log("user",user)
+      // console.log("user",user)
       firebase
         .firestore()
         .collection("chat")
@@ -174,7 +176,7 @@ var user = JSON.parse(localStorage.getItem("user"));
    
    function getAllmsgRealtime(){
  
-     var msg =[];
+    //  var msg =[];
     db.collection("chat").orderBy("time").onSnapshot((querySnapshot)=>{
       document.getElementById('message').innerHTML=""
       querySnapshot.forEach(doc=>{
@@ -183,13 +185,24 @@ var user = JSON.parse(localStorage.getItem("user"));
       // console.log(querySnapshot)
     });
     // console.log( msg)
-    // document.getElementById("myTextmsg").value=null
+
    }
-  
+   var user = JSON.parse(localStorage.getItem("user"));
+   window.onload = () => {
+    console.log(user.userName)
+  if(user.userName!==""){
+    $("#popup").addClass("hide");
+              $("#chat").removeClass("hide");
+  }
+};
 
 
 
-    // Create message box to show in UI
+
+    // show msg box
+
+    
+
     function showAllText(item) {
     
             var message = document.getElementById('message')
@@ -201,7 +214,7 @@ var user = JSON.parse(localStorage.getItem("user"));
               mymessage.innerHTML = `
                     <div class="mymsg" >
                       
-                      <div style="border:2px solid transparent; width:100%; text-align:end">
+                      <div style="border:2px solid transparent;  text-align:end; width: fit-content;background-color:#0583D2; border-radius:5px; padding:5px; color:white">
                         <small class='userName' >${item.userName}</small>
                        <p class='usertext'> ${item.message} </p>
                    
@@ -214,35 +227,51 @@ var user = JSON.parse(localStorage.getItem("user"));
             } else if (item.userName == undefined) {
               mymessage.innerHTML = `
                     <div class="othertext" >
-                      <div>
+                      <div >
                       <span class="material-icons"> account_circle </span>
                       </div>
+                      <div style="border:2px solid transparent;   width: fit-content;background-color:#205375; border-radius:5px;padding:5px; color:white">
+                     
                       <div>
                         <small class='userName'>Anonymous</small>
                         <p>${item.message}</p>
+                        </div>
                         </div>
                     </div>
                 `
             } else {
               mymessage.innerHTML = `
               <div class="othertext" >
-                      <div class='personicon'>
+                <div class='personicon'>
                       <span class="material-icons"> account_circle </span>
                       </div>
+                <div style="border:2px solid transparent;   width: fit-content;background-color:#205375; border-radius:5px; padding:5px; color:white">
+                     
                       <div>
                         <small class='userName'>${item.userName}</small>
                         <p>${item.message}</p>
+                        </div>
                         </div>
                     </div>
                 `
             }
            
-            message.append(mymessage)
+         
+
+             message.append(mymessage)
+           
+  
+
+            
          
             message.scrollTop = message.scrollHeight;
         }
        
         getAllmsgRealtime()
+
+      function logout(){
+        localStorage.clear();
+      }
        
 
        
