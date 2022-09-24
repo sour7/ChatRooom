@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>todo</title>
+  </head>
+  <style>
+    .delDiv {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .showtsk {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .showdiv {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  </style>
+  <body>
+<div style=" width: max-content; margin: auto;">
+  <div>
+    <h1 style="text-align:center ;">ToDo App</h1>
+    </div>
+    <div> 
+      <input
+        id="todo"
+        type="text"
+        placeholder="todo"
+        style="padding: 5px; font-size: 16px"
+        value=""
+      />
+      <button onclick="getdata()">Add</button>
+    </div>
+  </div>
+    <div style="display: flex; margin: auto; justify-content: space-around;">
+    <div>
+      <h4>Task to do...</h4>
+      <div id="showtask"></div>
+      </div>
+      <div>
+      <h4>Completed</h4>
+      <div id="completed"></div>
+    </div>
+    </div>
+  </div>
+  </body>
+
+  <script>
+    var todoArray = [];
+
+    function getdata() {
+      // var todoArray=[]
+      var todo = document.getElementById("todo").value;
+      // console.log(todo)
+      if (todo !== "") todoArray.push(todo);
+      document.getElementById("todo").value = "";
+      showtsk();
+    }
+
+    function showtsk() {
+      var showtask = document.getElementById("showtask");
+
+      showtask.innerHTML = "";
+      todoArray.map((el, idx) => {
+        var data = document.createElement("div");
+        data.setAttribute("class", "showdiv");
+
+        // console.log(todoArray)
+        var p1 = document.createElement("p");
+        p1.textContent = el;
+        var btndiv1 = document.createElement("div");
+        btndiv1.innerHTML = `<input type='checkbox'></input>`;
+        btndiv1.addEventListener("click", function () {
+          donetask(el, idx, todoArray);
+        });
+        data.append(p1, btndiv1);
+        showtask.append(data);
+      });
+    }
+
+    var done = [];
+    function donetask(el, idx) {
+      var completed = document.getElementById("completed");
+
+      done.push(el);
+
+      todoArray.splice(idx, 1);
+      showtsk();
+
+      showCompletetask(done);
+    }
+
+    function showCompletetask(done) {
+      var completed = document.getElementById("completed");
+      completed.innerHTML = "";
+
+      // console.log(done);
+      done.map((elm, i) => {
+        var div2 = document.createElement("div");
+        div2.setAttribute("class", "delDiv");
+        var p2 = document.createElement("p");
+        p2.textContent = elm;
+        var btndiv = document.createElement("div");
+        btndiv.innerHTML = `<button> Delete</button>`;
+        btndiv.addEventListener("click", function () {
+          deleteData(done, i);
+        });
+        var markasuncomplete= document.createElement("div");
+      markasuncomplete.innerHTML=`<button> mark as uncomplete</button>`
+      markasuncomplete.addEventListener("click", function () {
+          uncomplete(done, i);
+        });
+
+
+
+        div2.append(p2, btndiv, markasuncomplete);
+        completed.append(div2);
+      });
+    }
+
+    function deleteData(done, i) {
+      var delData = done.splice(i, 1);
+      showCompletetask(done);
+    }
+
+    function uncomplete(done, i){
+      todoArray.push(done[i])
+
+      showtsk()
+      done.splice(i, 1);
+      showCompletetask(done) 
+      
+    }
+
+
+  </script>
+</html>
