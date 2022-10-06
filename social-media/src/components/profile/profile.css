@@ -1,0 +1,95 @@
+.top{
+    margin: auto;
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+
+}
+.left{
+    display: flex;
+    
+}
+.left>h2{
+    color:#1976d2 
+}
+
+.picdiv{
+    /* border:2px solid red; */
+    width: 40%;
+    margin: auto;
+}
+.pic{
+    margin-top: 50px;
+  /* border: 2px solid red; */
+  margin:auto;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  position: relative;
+  
+}
+
+
+label.label1 input[type="file"] {
+    position: absolute;
+    top: -1000px;
+  }
+  .label1 {
+    cursor: pointer;
+    border: 2px solid #1976d2;
+    border-radius: 50%;
+    padding: 2px;
+    /* margin: 5px; */ 
+    background: white;
+    display: inline-block;
+    color: #1976d2;
+    position: relative;
+    top: -70px;
+    left: 80px;
+
+  }
+  .label1:hover {
+    background: #1976d2;
+    color: white;
+  }
+  .label1:active {
+    background: #ffffff;
+  }
+  .label1:invalid + span {
+    color: #000000;
+  }
+  .label1:valid + span {
+    color: #ffffff;
+  }
+
+.notification{
+    margin: auto;
+    width: 40%;
+    padding: 15px;
+    font-size: 22px;
+    margin-top: 10px;
+    display: flex;
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
+    justify-content: space-between;
+}
+.notification>div{
+    display: flex;
+    gap: 5px;
+}
+.updatepro{
+   /* border: 2px solid red; */
+   margin-top: 220px;
+   width: 40%;
+   padding: 10px;
+   font-size: 18px;
+   background-color: #1976d2;
+   color: white;
+   border-radius: 5px;
+   border: none;
+   outline: none;
+   cursor: pointer;
+
+}
+

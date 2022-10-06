@@ -1,0 +1,133 @@
+.cont {
+  /* border: 2px solid teal; */
+  height: 90vh;
+}
+
+.header {
+  /* border: 2px solid blue; */
+
+  font-size: 24px;
+
+  display: flex;
+  justify-content: space-around;
+  
+}
+.header > p:nth-child(1) {
+  /* border: 2px solid blue; */
+  font-weight: 700;
+  color: #1976d2;
+}
+.header > p:nth-child(2) {
+  /* border: 2px solid blue; */
+  color: gray;
+  cursor: pointer;
+}
+#textArea {
+  outline: none;
+  border: none;
+  /* width: 100%; */
+  height: 50vh;
+  height: 100%;
+  box-sizing: border-box;
+  resize: none;
+  font-size: 1.2rem;
+}
+#textArea::placeholder {
+  color: grey;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+.uploadmedia {
+  /* border: 2px solid red; */
+  display: flex;
+
+  justify-content: space-around;
+}
+
+label.label input[type="file"] {
+  position: absolute;
+  top: -1000px;
+}
+.label {
+  cursor: pointer;
+  border: 2px solid #1976d2;
+  border-radius: 5px;
+  padding: 0px 25px;
+  margin: 5px;
+  background: white;
+  display: inline-block;
+  color: #1976d2;
+}
+.label:hover {
+  background: #1976d2;
+  color: white;
+}
+.label:active {
+  background: #ffffff;
+}
+.label:invalid + span {
+  color: #000000;
+}
+.label:valid + span {
+  color: #ffffff;
+}
+
+.camera {
+  cursor: pointer;
+  border: 2px solid #1976d2;
+  border-radius: 5px;
+  padding: 0px 30px;
+  margin: 5px;
+  background: white;
+  display: inline-block;
+  color: #1976d2;
+}
+.camera:hover {
+  background: #1976d2;
+  color: white;
+}
+.postbtn{
+    width: 60%;
+    margin: auto;
+    padding: 15px;
+    background-color: #1976d2;
+    border: none;
+    border-radius: 5px;
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+}
+.result{
+  /* border: 2px solid red; */
+  min-height: 100%;
+  max-height: auto;
+  width: 100%;
+  /* background-color: #272c34; */
+  margin-top:1rem ;
+   display: flex;
+   flex-direction: column;
+  /* flex-wrap: wrap; */
+  align-items: center;
+  justify-content: left; 
+  
+}
+img{
+  width: 320px;
+  height: 180px;
+  object-fit: cover;
+  padding: 0.75rem;
+  
+}
+
+.cameradiv{
+  /* border: 2px solid red; */
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin: auto;
+}
+
+.clickbtn{
+  font-weight: 500;
+  font-size: 18px;
+}

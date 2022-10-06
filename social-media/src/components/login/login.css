@@ -1,0 +1,8 @@
+.login{
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    width: 35%;
+    margin: auto;
+    
+}

@@ -1,0 +1,128 @@
+* {
+  margin: 0;
+  padding: 0%;
+  font-family: sans-serif;
+}
+
+.title {
+  /* border: 2px solid red; */
+  padding: 0;
+  margin: 0;
+  margin-left: 25%;
+  margin-top: 10px;
+}
+.title > p {
+  width: fit-content;
+  font-size: 28px;
+  padding: 0;
+  margin-left: 10%;
+}
+.title > p:nth-child(1) {
+  /* border: 2px solid red; */
+  /* margin-left: 10%; */
+  color: gray;
+  font-weight: 600;
+}
+.title > p:nth-child(2) {
+  margin-left: 15%;
+  margin-top: -10px;
+  color: #1976d2;
+  font-weight: 600;
+}
+.whtsinMind {
+  border: 1px solid #1976d2;
+  margin: auto;
+  max-width: 33%;
+  text-align: left;
+  padding: 15px;
+  font-size: 18px;
+  font-weight: 600;
+  color: grey;
+  border-radius: 8px;
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+.card {
+  /* border: 2px solid red; */
+  width: 40%;
+  margin: auto;
+  margin-bottom: 20px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.rxn {
+  border: 2px solid rgb(164, 161, 161);
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 5px 0;
+}
+.rxn > div {
+  color: rgb(164, 161, 161);
+  width: 33%;
+}
+.rxn > div:nth-child(2) {
+  border-left: 2px solid rgb(164, 161, 161);
+}
+.rxn > div:nth-child(3) {
+  border-left: 2px solid rgb(164, 161, 161);
+}
+.profile {
+  /* border: 1px solid red; */
+  padding-left: 5%;
+  display: flex;
+  align-items: center;
+  gap: 40%;
+}
+.profile > div {
+  /* border: 2px solid red; */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer {
+  border: 2px solid rgb(164, 161, 161);
+
+  position: fixed;
+  bottom: 0;
+  left: 30%;
+  padding: 8px 0;
+  border-radius: 10px;
+  width: 40%;
+  margin: auto;
+  display: flex;
+  justify-content: space-around;
+  background: white;
+  cursor: pointer;
+  
+}
+.footer > div {
+  /* border: 2px solid red; */
+  width: 50%;
+  color: rgb(164, 161, 161);
+}
+.footer > div:nth-child(1) {
+  border-right: 2px solid rgb(164, 161, 161);
+
+}
+
+.popup {
+  /* border: 2px solid red; */
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 10px;
+}
+
+.delbtn {
+  width: 100%;
+  /* padding: 5px; */
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+}

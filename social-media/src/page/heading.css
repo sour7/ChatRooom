@@ -1,0 +1,25 @@
+.container{
+/* border: 2px solid red; */
+margin-top: 20vh;
+
+
+}
+.fname{
+    /* border: 2px solid red; */
+    font-size: 120px;
+    font-weight: 600;
+    font-family: sans-serif;
+    padding: 0%;
+    color: grey;
+}
+.lastname{
+    font-size: 120px;
+    font-weight: 600;
+    font-family: sans-serif;
+    padding: 0%;
+    color: 
+    #1976d2 ;
+    text-align: end;
+    padding-right: 5%;
+
+}
