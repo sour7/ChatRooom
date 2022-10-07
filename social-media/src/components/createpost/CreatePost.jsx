@@ -4,14 +4,11 @@ import Webcam from "react-webcam";
 import PhotoSizeSelectActualIcon from "@mui/icons-material/PhotoSizeSelectActual";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { db } from "../../config/firebase-config";
-import {
-  addDoc,
-  collection,
- 
-} from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 
 import "./createpost.css";
 import { useNavigate } from "react-router";
+import { AddReaction } from "@mui/icons-material";
 
 export const CreatePost = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -21,62 +18,57 @@ export const CreatePost = () => {
   var user = JSON.parse(localStorage.getItem("user"));
   var posts = collection(db, "posts");
   const webRef = useRef();
-  const navigate= useNavigate()
+  const navigate = useNavigate();
 
   const createPost = async () => {
+    
+
     const obj = {
-      
       name: user.name,
       profilePic: user.profilePic,
       postText: post,
       imageData: selectedFiles,
       //  cameraImg:cameraImg,
+      heart:0,
+      smile:0,
+      like:0,
+
       time: Date.now(),
+    }
     
-    };
-   
+    await addDoc(posts, obj);
     
-    await addDoc(posts, obj)
-   
-
     alert("data posted");
-    // setPost("")
-    navigate('/allposts')
-    // setSelectedFiles("")
+    navigate("/allposts");
+    
+   
   };
 
- 
+  const handleImageChange = async (e) => {
+    // console.log(e.target.files[0])
+    const file = e.target.files[0];
 
-  const handleImageChange = async(e) => {
-  // console.log(e.target.files[0])
-    const file= e.target.files[0]
- 
-    const base64= await convertBase64(file)
-    console.log(base64)
-  
-    setSelectedFiles([...selectedFiles,base64])
+    const base64 = await convertBase64(file);
+    console.log(base64);
+
+    setSelectedFiles([...selectedFiles, base64]);
   };
 
-  const convertBase64 =(file)=>{
-    return new Promise((resolve, reject)=>{
-      var fileReader= new FileReader();
-      fileReader.readAsDataURL(file)
-      fileReader.onload =()=>{
-        resolve(fileReader.result)
-      }
-      fileReader.onerror =(err)=>{
-       
-          reject(err)
-        
-      }
-    })
-  }
-
-  const renderPhotos = (source) => {
-    // console.log('source: ', source);
-    return selectedFiles.map((photo) => {
-      return <img src={photo} alt="" key={photo} />;
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      var fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (err) => {
+        reject(err);
+      };
     });
+  };
+  const deletephoto = (e) => {
+    let x = e.target.getAttribute("removePic");
+    setSelectedFiles(selectedFiles.filter((items) => items !== x));
   };
 
   const handleCamera = () => {
@@ -88,15 +80,12 @@ export const CreatePost = () => {
     setSelectedFiles([...selectedFiles, webRef.current.getScreenshot()]);
   };
 
- 
-
   return (
     <div className="cont">
       <div className="header">
         <p>Create Post</p>
 
-        
-        <p onClick={()=>navigate('/allposts')}> X</p>
+        <p onClick={() => navigate("/allposts")}> X</p>
       </div>
       <hr />
       <div>
@@ -109,15 +98,19 @@ export const CreatePost = () => {
           value={post}
           onChange={(e) => setPost(e.target.value)}
         ></textarea>
-        <div className="result">{renderPhotos(selectedFiles)}</div>
 
-        {/* {
-          selectedFiles.map(ele => {
-            return (
-              <div><img src={ele} alt="" /></div>
-            )
-          })
-        } */}
+        {/* <div className="result">{renderPhotos(selectedFiles)}</div> */}
+
+        {selectedFiles.map((ele) => {
+          return (
+            <div className="picArray">
+              <img src={ele} alt="" />
+              <span removePic={ele} onClick={deletephoto}>
+                X
+              </span>
+            </div>
+          );
+        })}
         {camera && (
           <div className="cameradiv">
             <Webcam ref={webRef} />
@@ -139,7 +132,9 @@ export const CreatePost = () => {
               type="file"
               id="file"
               multiple
-              onChange={(e)=>{handleImageChange(e);}}
+              onChange={(e) => {
+                handleImageChange(e);
+              }}
             />
             <div>
               <PhotoSizeSelectActualIcon />

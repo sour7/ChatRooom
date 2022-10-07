@@ -10,7 +10,7 @@ import CreateIcon from "@mui/icons-material/Create";
 import "./profile.css";
 import { useNavigate } from "react-router";
 
-import Switch from '@mui/material/Switch';
+import Switch from "@mui/material/Switch";
 import { db } from "../../config/firebase-config";
 import {
   addDoc,
@@ -20,86 +20,67 @@ import {
   setDoc,
   getDocs,
   updateDoc,
-  arrayUnion
- 
+  arrayUnion,
 } from "firebase/firestore";
 
 const Profile = () => {
   let user = JSON.parse(localStorage.getItem("user"));
-  const navigate= useNavigate()
- 
+  const navigate = useNavigate();
 
   const [checked, setChecked] = React.useState(true);
-  const [profilePic, setProfilePic] = useState(user.profilePic)
+  const [profilePic, setProfilePic] = useState(user.profilePic);
   // const [post, setPost] = useState("");
   // const [selectedFiles, setSelectedFiles] = useState([]);
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
 
-  const handleImageChange = async(e) => {
-    console.log(e.target.files[0])
-      const file= e.target.files[0]
-   
-      const base64= await convertBase64(file)
-      console.log(base64)
-       setProfilePic(base64)
-      
-      // setSelectedFiles([...selectedFiles,base64])
-    };
-  
-    const convertBase64 =(file)=>{
-      return new Promise((resolve, reject)=>{
-        var fileReader= new FileReader();
-        fileReader.readAsDataURL(file)
-        fileReader.onload =()=>{
-          resolve(fileReader.result)
-        }
-        fileReader.onerror =(err)=>{
-         
-            reject(err)
-          
-        }
-      })
-    }
-    
-    localStorage.setItem('user', JSON.stringify({...user,profilePic:profilePic}));
-const updatedUser = JSON.parse(localStorage.getItem('user'));
-// console.log("updatedUser",updatedUser)
+  const handleImageChange = async (e) => {
+    console.log(e.target.files[0]);
+    const file = e.target.files[0];
 
-// var posts = collection(db, "posts");
+    const base64 = await convertBase64(file);
+    console.log(base64);
+    setProfilePic(base64);
 
-const updateProfile =()=>{
-  const data = doc(db, "posts", updatedUser.name);
-// await setDoc(data, {
-//     name: "sourabh kumar",
-//     profilePic: profilePic
-// });
+    // setSelectedFiles([...selectedFiles,base64])
+  };
 
-// To update age and favorite color:
- updateDoc(data, {
-  profilePic: updatedUser.profilePic
- 
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      var fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (err) => {
+        reject(err);
+      };
+    });
+  };
 
-});
-navigate('/allposts')
+  localStorage.setItem(
+    "user",
+    JSON.stringify({ ...user, profilePic: profilePic })
+  );
+  const updatedUser = JSON.parse(localStorage.getItem("user"));
+  // console.log("updatedUser",updatedUser)
 
-  
-//   console.log(updatedUser)
-//   var path=doc(posts, updatedUser.name);
-//   const obj11={
-//     profilePic: updatedUser.profilePic,
-//     time: Date.now(),
-//   }
-//   console.log("posts", )
-// await updateDoc(path, obj11);
-//   // navigate('/allposts')
-}
+  // var posts = collection(db, "posts");
+
+  const updateProfile = () => {
+    const data = doc(db, "posts", updatedUser.name);
+
+    updateDoc(data, {
+      profilePic: updatedUser.profilePic,
+    });
+    navigate("/allposts");
+  };
 
   return (
     <div>
       <div className="top">
-        <div className="left"  onClick={()=>navigate('/allposts')}>
+        <div className="left" onClick={() => navigate("/allposts")}>
           <ArrowBackIosIcon />
           <h2>Profile</h2>
         </div>
@@ -109,18 +90,12 @@ navigate('/allposts')
       </div>
       <div className="picdiv">
         <img className="pic" src={profilePic} alt="" />
-       
-<div>
+
+        <div>
           <label className="label1">
-            <input
-              type="file"
-              id="file"
-             onChange={handleImageChange}
-             
-            />
+            <input type="file" id="file" onChange={handleImageChange} />
             <div>
-            <CreateIcon />
-            
+              <CreateIcon />
             </div>
           </label>
         </div>
@@ -134,16 +109,18 @@ navigate('/allposts')
           <p>Notification</p>
         </div>
         <span>
-        <Switch
-  checked={checked}
-  onChange={handleChange}
-  inputProps={{ 'aria-label': 'controlled' }}
-/>
+          <Switch
+            checked={checked}
+            onChange={handleChange}
+            inputProps={{ "aria-label": "controlled" }}
+          />
         </span>
       </div>
 
       <div>
-        <button className="updatepro" onClick={updateProfile}>Update Profile</button>
+        <button className="updatepro" onClick={updateProfile}>
+          Update Profile
+        </button>
 
         <Footer />
       </div>

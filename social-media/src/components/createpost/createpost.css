@@ -10,7 +10,6 @@
 
   display: flex;
   justify-content: space-around;
-  
 }
 .header > p:nth-child(1) {
   /* border: 2px solid blue; */
@@ -71,7 +70,23 @@ label.label input[type="file"] {
 .label:valid + span {
   color: #ffffff;
 }
+.picArray {
+  margin: auto;
+  /* border: 2px solid red; */
+  display: flex;
+  align-items: top;
+  width: fit-content;
+  justify-content: center;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  padding-right: 10px;
+}
 
+.picArray span {
+  cursor: pointer;
+  padding-top: 10px;
+
+  font-size: 26px;
+}
 .camera {
   cursor: pointer;
   border: 2px solid #1976d2;
@@ -86,40 +101,38 @@ label.label input[type="file"] {
   background: #1976d2;
   color: white;
 }
-.postbtn{
-    width: 60%;
-    margin: auto;
-    padding: 15px;
-    background-color: #1976d2;
-    border: none;
-    border-radius: 5px;
-    color: #ffffff;
-    font-weight: 600;
-    cursor: pointer;
+.postbtn {
+  width: 60%;
+  margin: auto;
+  padding: 15px;
+  background-color: #1976d2;
+  border: none;
+  border-radius: 5px;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
 }
-.result{
+.result {
   /* border: 2px solid red; */
   min-height: 100%;
   max-height: auto;
   width: 100%;
   /* background-color: #272c34; */
-  margin-top:1rem ;
-   display: flex;
-   flex-direction: column;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
   /* flex-wrap: wrap; */
   align-items: center;
-  justify-content: left; 
-  
+  justify-content: left;
 }
-img{
+img {
   width: 320px;
   height: 180px;
   object-fit: cover;
   padding: 0.75rem;
-  
 }
 
-.cameradiv{
+.cameradiv {
   /* border: 2px solid red; */
   display: flex;
   flex-direction: column;
@@ -127,7 +140,7 @@ img{
   margin: auto;
 }
 
-.clickbtn{
+.clickbtn {
   font-weight: 500;
   font-size: 18px;
 }
