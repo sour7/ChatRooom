@@ -9,7 +9,7 @@ import {
 
 } from "firebase/auth";
 
-
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -42,17 +42,21 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
 export const auth = getAuth();
+export const messaging = getMessaging(app);
 
-
+// console.log("messaging", messaging)
 
 
 
 // export const auth1 = getAuth();
-export const logout =()=>{
-app.auth().signOut()
-alert('log out')
-}
+// export const logout =()=>{
+// app.auth().signOut()
+// alert('log out')
+// }
+
+
+

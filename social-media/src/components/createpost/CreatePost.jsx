@@ -1,37 +1,46 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {  useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
 
 import PhotoSizeSelectActualIcon from "@mui/icons-material/PhotoSizeSelectActual";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { db } from "../../config/firebase-config";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, updateDoc } from "firebase/firestore";
 
 import "./createpost.css";
 import { useNavigate } from "react-router";
-import { AddReaction } from "@mui/icons-material";
+
 
 export const CreatePost = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   // const [cameraImg, setCameraImg] = useState([])
   const [camera, setCamera] = useState(false);
   const [post, setPost] = useState("");
+  const [heart, setHeart] =useState([])
+  const [smile, setSmile] =useState([])
   var user = JSON.parse(localStorage.getItem("user"));
   var posts = collection(db, "posts");
   const webRef = useRef();
   const navigate = useNavigate();
+   
+  useEffect(()=>{
+    setSelectedFiles(draft&&draft.imageData)
+  },[])
+
 
   const createPost = async () => {
     
-
     const obj = {
       name: user.name,
       profilePic: user.profilePic,
-      postText: post,
+      uid: user.uid,
+      email:user.email,
+      postText: post||draft.postText,
+      tags : post.match(/#\w+/g),
       imageData: selectedFiles,
+      heart :heart,
+      smile:smile,
       //  cameraImg:cameraImg,
-      heart:0,
-      smile:0,
-      like:0,
+     
 
       time: Date.now(),
     }
@@ -41,15 +50,19 @@ export const CreatePost = () => {
     alert("data posted");
     navigate("/allposts");
     
-   
+    localStorage.setItem(
+    "draftPosts",
+      JSON.stringify({ ...draft, postText: "" ,imageData:""})
+    );
   };
+  
 
   const handleImageChange = async (e) => {
     // console.log(e.target.files[0])
     const file = e.target.files[0];
 
     const base64 = await convertBase64(file);
-    console.log(base64);
+    // console.log(base64);
 
     setSelectedFiles([...selectedFiles, base64]);
   };
@@ -66,6 +79,9 @@ export const CreatePost = () => {
       };
     });
   };
+
+
+
   const deletephoto = (e) => {
     let x = e.target.getAttribute("removePic");
     setSelectedFiles(selectedFiles.filter((items) => items !== x));
@@ -80,30 +96,71 @@ export const CreatePost = () => {
     setSelectedFiles([...selectedFiles, webRef.current.getScreenshot()]);
   };
 
+  
+  // save as Draft
+  const saveAsDraft=()=>{
+ if (window.confirm("do you want to save it")){
+  
+    const darftPost=
+     { name: user.name,
+      profilePic: user.profilePic,
+      uid: user.uid,
+      email:user.email,
+      postText: post||draft.postText,
+      tags : post.match(/#\w+/g),
+      imageData: selectedFiles,
+      heart :heart,
+      smile:smile,
+      time: Date.now(),}
+       
+        
+           localStorage.setItem("draftPosts",JSON.stringify(darftPost));  
+           navigate("/allposts")
+        
+        }
+    }
+    
+    var draft = JSON.parse(localStorage.getItem("draftPosts"));
+  // console.log("fraft", draft.postText)
+
+  
+
+
   return (
     <div className="cont">
       <div className="header">
         <p>Create Post</p>
 
-        <p onClick={() => navigate("/allposts")}> X</p>
+        <p onClick={saveAsDraft}> X</p>
       </div>
       <hr />
       <div>
-        <textarea
+        {
+          (draft?.postText)?
+          <textarea
+            name=""
+            id="textArea"
+            cols="95"
+            rows="20"
+            placeholder="What's on your mind "
+            defaultValue={draft.postText}
+            onChange={(e) => setPost(e.target.value)}
+          ></textarea>:
+          <textarea
           name=""
           id="textArea"
           cols="95"
           rows="20"
           placeholder="What's on your mind "
-          value={post}
+          defaultValue={post}
           onChange={(e) => setPost(e.target.value)}
         ></textarea>
+        }
 
-        {/* <div className="result">{renderPhotos(selectedFiles)}</div> */}
-
-        {selectedFiles.map((ele) => {
+        {selectedFiles&&
+        selectedFiles.map((ele) => {
           return (
-            <div className="picArray">
+            <div className="picArray" key={ele}>
               <img src={ele} alt="" />
               <span removePic={ele} onClick={deletephoto}>
                 X

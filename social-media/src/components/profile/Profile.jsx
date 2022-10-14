@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import { auth } from '../../config/firebase-config'
-import { logout } from "../../config/firebase-config";
+// import { logout } from "../../config/firebase-config";
 import { Footer } from "../allposts/Footer";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -29,8 +29,19 @@ const Profile = () => {
 
   const [checked, setChecked] = React.useState(true);
   const [profilePic, setProfilePic] = useState(user.profilePic);
-  // const [post, setPost] = useState("");
-  // const [selectedFiles, setSelectedFiles] = useState([]);
+  const [updatepic, setUpdatepic] = useState([]);
+
+  //getting data from database
+  useEffect(() => {
+    getdata();
+  }, []);
+  var posts = collection(db, "posts");
+  async function getdata() {
+    var res = await getDocs(posts);
+    setUpdatepic(res.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  }
+  console.log(updatepic);
+
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
@@ -59,24 +70,24 @@ const Profile = () => {
     });
   };
 
-  localStorage.setItem(
-    "user",
-    JSON.stringify({ ...user, profilePic: profilePic })
-  );
   const updatedUser = JSON.parse(localStorage.getItem("user"));
-  // console.log("updatedUser",updatedUser)
 
-  // var posts = collection(db, "posts");
-
-  const updateProfile = () => {
-    const data = doc(db, "posts", updatedUser.name);
-
-    updateDoc(data, {
-      profilePic: updatedUser.profilePic,
-    });
+  //updating profile pic
+  const updateProfile = async () => {
+    for (let i = 0; i < updatepic.length; i++) {
+      if (updatepic[i].email === updatedUser.email) {
+        const path = doc(posts, updatepic[i].id);
+        await updateDoc(path, { profilePic: profilePic });
+      }
+    }
+    localStorage.setItem(
+      "user",
+      JSON.stringify({ ...user, profilePic: profilePic })
+    );
+    alert("profile Updated");
     navigate("/allposts");
   };
-
+  // console.log("chacked", checked);
   return (
     <div>
       <div className="top">
@@ -84,7 +95,7 @@ const Profile = () => {
           <ArrowBackIosIcon />
           <h2>Profile</h2>
         </div>
-        <div onClick={logout}>
+        <div>
           <LogoutIcon />
         </div>
       </div>
@@ -116,6 +127,8 @@ const Profile = () => {
           />
         </span>
       </div>
+
+      <div className="draft"></div>
 
       <div>
         <button className="updatepro" onClick={updateProfile}>

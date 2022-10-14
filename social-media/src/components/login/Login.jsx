@@ -18,8 +18,13 @@ import {
 } from "firebase/auth";
 import { auth } from '../../config/firebase-config';
 import { useNavigate } from 'react-router';
+import { db } from "../../config/firebase-config";
+import { addDoc, collection } from "firebase/firestore";
 
 export const Login = () => {
+
+
+  var users = collection(db, "users");
 
 const navigate= useNavigate()
 
@@ -29,17 +34,23 @@ const navigate= useNavigate()
   signInWithPopup(auth, googleprovider)
     .then((res) => {
       console.log(res);
+      const uid=res.user.uid;
       const name = res.user.displayName;
       const email = res.user.email;
       const profilePic = res.user.photoURL;
-      localStorage.setItem(
+     localStorage.setItem(
         "user",
         JSON.stringify({
           name: name,
           email: email,
           profilePic: profilePic,
+          uid:uid
         })
+    
       );
+      var user = JSON.parse(localStorage.getItem("user")); 
+    // console.log("user", user)
+      addDoc(users,user)
       navigate('/allposts')
     })
     
@@ -72,7 +83,8 @@ const fbprovider = new FacebookAuthProvider();
     });
 };
 
- 
+
+
   return (
     <div className='login'>
         <Heading/>

@@ -142,18 +142,12 @@ export const Edit = (props) => {
                     </div>
                   );
                 })}
-                {/* <img src={el.imageData} alt=""  /> */}
+               
               </div>
             )
         )}
 
-        {/* {
-          selectedFiles.map(ele => {
-            return (
-              <div><img src={ele} alt="" /></div>
-            )
-          })
-        }  */}
+      
         {camera && (
           <div className="cameradiv">
             <Webcam ref={webRef} />

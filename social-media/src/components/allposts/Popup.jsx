@@ -15,9 +15,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { Edit } from "../edit/Edit";
-import {Routes,Route} from 'react-router-dom'
-
-
+import { Routes, Route } from "react-router-dom";
 
 export default function Popup(props) {
   const [data, setData] = useState([]);
@@ -29,7 +27,6 @@ export default function Popup(props) {
     var res = await getDocs(posts);
     setData(res.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   }
- 
 
   useEffect(() => {
     getdata();
@@ -39,7 +36,6 @@ export default function Popup(props) {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -58,13 +54,9 @@ export default function Popup(props) {
   };
   // const navigate= useNavigate()
 
-  const handleEdit=(props)=>{
-    
+  const handleEdit = (props) => {
     sessionStorage.setItem("data", JSON.stringify(props));
-
-
-  }
-
+  };
 
   return (
     <div>
@@ -82,17 +74,16 @@ export default function Popup(props) {
           horizontal: "left",
         }}
       >
-       
         <div className="popup">
-       
-       <Link to='/edit'> 
-       <button className="delbtn" onClick={()=>(handleEdit(props))}>Edit</button>
-       
-       </Link>
-       
-        <button className="delbtn" onClick={() => deletepost(props.item.id)}>Delete</button>
-       
-        
+          <Link to="/edit">
+            <button className="delbtn" onClick={() => handleEdit(props)}>
+              Edit
+            </button>
+          </Link>
+
+          <button className="delbtn" onClick={() => deletepost(props.item.id)}>
+            Delete
+          </button>
         </div>
       </Popover>
     </div>
